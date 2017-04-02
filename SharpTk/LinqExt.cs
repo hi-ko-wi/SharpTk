@@ -10,15 +10,18 @@
 // Part of:  Tranquility
 // -
 // Author:   Haiko Wick (Haiko Wick)
-// Modified: 2017-04-02 09:01
+// Modified: 2017-04-02 09:53
 // --------------------------------------------------------------------------------------------------------------------
-
-using System;
-using System.Linq.Expressions;
-using JetBrains.Annotations;
 
 namespace SharpTk
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Linq.Expressions;
+
+    using JetBrains.Annotations;
+
     public static class LinqExt
     {
         public static string PropertyNameFromMemberExpression<TClass, TRight>(
@@ -29,5 +32,8 @@ namespace SharpTk
                 propertyName = ((MemberExpression) (selector.Body as UnaryExpression)?.Operand)?.Member.Name;
             return propertyName ?? ((MemberExpression) selector.Body)?.Member.Name;
         }
+
+        public static List<TOut> SelectList<TIn, TOut>(this IEnumerable<TIn> input, Func<TIn, TOut> selector)
+            where TIn : class where TOut : class => input.Select(selector: selector).ToList();
     }
 }
